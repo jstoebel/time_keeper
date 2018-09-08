@@ -5,6 +5,20 @@ import { createHashHistory } from 'history';
 import Root from './containers/Root';
 import './app.global.scss';
 
+
+// apolloClient
+//   .query({
+//     query: gql`
+// {
+// 	allTasks {
+// 		id
+// 		description
+// 	}
+// }
+//     `
+//   })
+//   .then(result => console.log(result));
+
 const history = createHashHistory();
 
 render(
