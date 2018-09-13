@@ -19,8 +19,10 @@ const Tasks = () => (
     {({ loading, error, data }) => {
       if (loading) return <p>loading</p>;
       if (error) return <p>error!</p>
-      console.log(data);
-      return data.allTasks.map((task: React.SFC, idx: number) => (<Task data={task} key={idx}/>))
+      return data.allTasks.map(
+        (
+          task: {id: number, name: string, description: string}, idx: number
+        ) => (<Task key={idx} {...task }/>))
     }}
   </Query>
 );
