@@ -1,20 +1,13 @@
 import * as React from 'react';
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import allTasks from '../graphql/queries/allTasks'
 
 import Task from './Task'
 
 const Tasks = () => (
+
   <Query
-    query={gql`
-      {
-        allTasks{
-          id
-          name
-          description
-        }
-      }
-    `}
+    query={allTasks}
   >
     {({ loading, error, data }) => {
       if (loading) return <p>loading</p>;
