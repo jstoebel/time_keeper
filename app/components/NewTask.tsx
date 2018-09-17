@@ -2,25 +2,21 @@ import * as React from 'react';
 import { Mutation } from 'react-apollo';
 import ADD_TASK from '../graphql/mutations/newTask';
 import ALL_TASKS from '../graphql/queries/allTasks';
-// import gql from 'graphql-tag';
-
-// const bsQuery = gql`
-//   mutation createInterval {
-//     createInterval(name: "whatever", description: "nah") {
-//       id
-//     }
-//   }
-// `
+import TaskI from '../interfaces/Task';
 
 interface PropsI {}
 
 interface StateI { name: string, description: string}
 
+interface AllTasksI {
+  allTasks: Array<TaskI>;
+}
+
 export class NewTask extends React.Component<PropsI, StateI> {
 
   state = {
-    name: 'name string',
-    description: 'description string'
+    name: '',
+    description: ''
   }
   constructor(props: any) {
     super(props)
@@ -28,16 +24,10 @@ export class NewTask extends React.Component<PropsI, StateI> {
 
   handleFormSubmit(e: React.FormEvent<HTMLInputElement>) {
     e.preventDefault();
-    console.log(this.state);
   }
 
   public render() {
     const {name, description} = this.state;
-    console.log('render!');
-    console.log(name);
-    console.log(description);
-    
-    
     return (
       <div>
         <form>
@@ -58,26 +48,15 @@ export class NewTask extends React.Component<PropsI, StateI> {
               type="text"
             />
           </div>
-          <div>{this.state.name}</div>
-          <div>{this.state.description}</div>
-          <Mutation 
+          <Mutation
             mutation={ADD_TASK}
             variables={{name, description}}
             update={(cache, { data: { createTask } }) => {
-              console.log(cache.readQuery({ query: ALL_TASKS }));
-              
-              // const allTasks = cache.readQuery({ query: ALL_TASKS }).allTasks;
-
-              // if (cacheResults && cacheResults.allTasks) {
-              //   return;
-              // }
-
-
-              // const allTasks = cache.readQuery({ query: ALL_TASKS }).allTasks;
-              // cache.writeQuery({
-              //   query: ALL_TASKS,
-              //   data: { todos: allTasks.concat([allTasks]) }
-              // });
+              const { allTasks } = cache.readQuery<AllTasksI>({ query: ALL_TASKS })!;
+              cache.writeQuery({
+                query: ALL_TASKS,
+                data: { allTasks: allTasks.concat([createTask]) }
+              });
             }}
           >
             {postMutation => <button onClick={() => {postMutation()}}>Submit</button>}
