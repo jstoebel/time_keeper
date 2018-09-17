@@ -1,10 +1,8 @@
 import * as React from 'react';
+import TaskI from '../interfaces/Task';
 
-interface TaskProps {
+interface TaskProps extends TaskI {
   key: number,
-  id: number,
-  name: string,
-  description: string,
 }
 
 const Task: React.SFC<TaskProps> = (props) => {
