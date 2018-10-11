@@ -7,6 +7,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const port = process.env.PORT || 8000;
 
@@ -33,60 +34,64 @@ module.exports = merge(baseConfig, {
     // ],
     loaders: [
       {
-        test: /\.global\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?sourceMap'
-        ]
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'),
       },
+      // {
+      //   test: /\.global\.css$/,
+      //   loaders: [
+      //     'style-loader',
+      //     'css-loader?sourceMap'
+      //   ]
+      // },
 
-      {
-        test: /^((?!\.global).)*\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        ]
-      },
+      // {
+      //   test: /^((?!\.global).)*\.css$/,
+      //   loaders: [
+      //     'style-loader',
+      //     'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+      //   ]
+      // },
 
-      // Add SASS support  - compile all .global.scss files and pipe it to style.css
-      {
-        test: /\.global\.scss$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
-      },
-      // Add SASS support  - compile all other .scss files and pipe it to style.css
-      {
-        test: /^((?!\.global).)*\.scss$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              sourceMap: true,
-              importLoaders: 1,
-              localIdentName: '[name]__[local]__[hash:base64:5]',
-            }
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
-      },
+      // // Add SASS support  - compile all .global.scss files and pipe it to style.css
+      // {
+      //   test: /\.global\.scss$/,
+      //   use: [
+      //     {
+      //       loader: 'style-loader'
+      //     },
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         sourceMap: true,
+      //       },
+      //     },
+      //     {
+      //       loader: 'sass-loader'
+      //     }
+      //   ]
+      // },
+      // // Add SASS support  - compile all other .scss files and pipe it to style.css
+      // {
+      //   test: /^((?!\.global).)*\.scss$/,
+      //   use: [
+      //     {
+      //       loader: 'style-loader'
+      //     },
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         modules: true,
+      //         sourceMap: true,
+      //         importLoaders: 1,
+      //         localIdentName: '[name]__[local]__[hash:base64:5]',
+      //       }
+      //     },
+      //     {
+      //       loader: 'sass-loader'
+      //     }
+      //   ]
+      // },
 
       // WOFF Font
       {
@@ -159,6 +164,7 @@ module.exports = merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true
     }),
+    new ExtractTextPlugin("styles.css"),
   ],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
