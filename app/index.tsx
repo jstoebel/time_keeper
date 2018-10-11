@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { createHashHistory } from 'history';
 import Root from './containers/Root';
-import './app.global.scss';
+import './fonts';
 
 const history = createHashHistory();
 
